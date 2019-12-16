@@ -110,6 +110,14 @@ You can use ``curl`` in order to test your user with the API. Here is an example
 
 In the case above, we are using ``GET`` to fetch information from the ``server`` endpoint.
 
+To simplify the operation, you can ignore API user authentication with the following command::
+
+  $ ceph restful disable-auth
+
+You can also restore authentication to the API with the following command::
+
+  $ ceph restful enable-auth
+
 Load balancer
 -------------
 

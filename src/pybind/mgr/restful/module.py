@@ -226,6 +226,16 @@ class Module(MgrModule):
             "desc": "Restart API server",
             "perm": "rw"
         },
+        {
+            "cmd": "restful disable-auth",
+            "desc": "Disable http basic authentication",
+            "perm": "rw"
+        },
+        {
+            "cmd": "restful enable-auth",
+            "desc": "Enable http basic authentication",
+            "perm": "rw"
+        }
     ]
 
     def __init__(self, *args, **kwargs):
@@ -236,7 +246,7 @@ class Module(MgrModule):
         self.requests_lock = threading.RLock()
 
         self.keys = {}
-        self.disable_auth = False
+        self.disable_auth = str(self.get_localized_store("disable_auth", "false")).lower() == "true"
 
         self.server = None
 
@@ -461,6 +471,24 @@ class Module(MgrModule):
             return (
                 0,
                 "Restarting RESTful API server...",
+                ""
+            )
+
+        elif command['prefix'] == "restful disable-auth":
+            self.disable_auth = True
+            self.set_store("disable_auth", "true")
+            return (
+                0,
+                "HTTP basic authentication has been disabled",
+                ""
+            )
+
+        elif command['prefix'] == "restful enable-auth":
+            self.disable_auth = False
+            self.set_store("disable_auth", "false")
+            return (
+                0,
+                "HTTP basic authentication is enabled",
                 ""
             )
 
